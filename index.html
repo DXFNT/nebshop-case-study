@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebshop Case Study | Dexfinity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Questrial&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --dex-blue: #0065F7;
+    --dex-navy: #05024E;
+    --dex-white: #ffffff;
+    --dex-light-bg: #F4F6FC;
+    --dex-blue-light: #E8F0FE;
+    --dex-blue-10: rgba(0, 101, 247, 0.1);
+    --dex-text: #1A1A2E;
+    --dex-muted: #6B7280;
+    --font-primary: 'Questrial', Arial, sans-serif;
+    --font-secondary: 'Poppins', Arial, sans-serif;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+}
+
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+body { font-family: var(--font-secondary); color: var(--dex-text); background: var(--dex-white); line-height: 1.6; }
+h1, h2, h3 { font-family: var(--font-primary); }
+
+/* Navbar */
+nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 22px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.3s ease, color 0.3s ease;
+    background: rgba(5, 2, 78, 0.85);
+    backdrop-filter: blur(12px);
+}
+nav.light-mode { background: rgba(255, 255, 255, 0.92); border-bottom: 1px solid rgba(0, 101, 247, 0.08); }
+nav .logo img { height: 72px; display: block; }
+nav .case-tag {
+    font-family: var(--font-secondary);
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--dex-white); opacity: 0.85;
+}
+nav.light-mode .case-tag { color: var(--dex-navy); }
+
+/* Slide skeleton */
+.slide {
+    min-height: 100vh; scroll-snap-align: start;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 140px 80px 80px;
+}
+.slide-inner { width: 100%; max-width: 1200px; position: relative; z-index: 2; }
+
+.slide-dark { background: var(--dex-navy); color: var(--dex-white); }
+.slide-light { background: var(--dex-white); color: var(--dex-text); }
+.slide-tinted { background: var(--dex-light-bg); color: var(--dex-text); }
+
+/* Decorative circles */
+.circle { position: absolute; border-radius: 50%; pointer-events: none; }
+.circle-outline { border: 2px solid var(--dex-blue); opacity: 0.18; }
+.circle-filled { background: var(--dex-blue); opacity: 0.06; }
+.circle-gradient { background: radial-gradient(circle, var(--dex-blue) 0%, transparent 70%); opacity: 0.10; }
+
+/* Animations */
+.fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.35s; }
+.delay-4 { transition-delay: 0.5s; }
+
+/* Slide 1: Hero */
+.hero-eyebrow {
+    font-family: var(--font-secondary);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--dex-blue);
+    margin-bottom: 28px;
+}
+.hero-title {
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 400;
+    line-height: 1.05;
+    margin-bottom: 28px;
+    letter-spacing: -1px;
+}
+.hero-title em { font-style: normal; color: var(--dex-blue); }
+.hero-subtitle {
+    font-family: var(--font-secondary);
+    font-size: 22px;
+    font-weight: 300;
+    max-width: 760px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+    opacity: 0.85;
+}
+.hero-meta {
+    display: flex; gap: 36px; flex-wrap: wrap;
+    font-family: var(--font-secondary);
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    opacity: 0.7;
+}
+.hero-meta span { position: relative; padding-right: 36px; }
+.hero-meta span:not(:last-child)::after {
+    content: ""; position: absolute; right: 0; top: 50%;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--dex-blue); transform: translateY(-50%);
+}
+
+/* Section title pattern */
+.section-eyebrow {
+    font-family: var(--font-secondary);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--dex-blue);
+    margin-bottom: 18px;
+}
+.section-title {
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 22px;
+    letter-spacing: -0.5px;
+}
+.section-lead {
+    font-family: var(--font-secondary);
+    font-size: 19px; font-weight: 300;
+    max-width: 820px;
+    line-height: 1.55;
+    margin-bottom: 56px;
+    opacity: 0.88;
+}
+.slide-light .section-lead, .slide-tinted .section-lead { opacity: 1; color: var(--dex-muted); }
+
+/* Slide 2: Numbers grid (situation before) */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+.metric-card {
+    padding: 36px 28px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(8px);
+}
+.metric-value {
+    font-family: var(--font-primary);
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--dex-blue);
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+.metric-label {
+    font-family: var(--font-secondary);
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 14px;
+}
+.metric-note {
+    font-family: var(--font-secondary);
+    font-size: 14px; font-weight: 300;
+    line-height: 1.5;
+    opacity: 0.7;
+}
+
+/* Slide 3 + 5 + 7: Two-column layout */
+.split {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: 80px;
+    align-items: center;
+}
+.split-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-width: 460px;
+}
+.split-visual .circle { position: absolute; }
+.split-visual .vc-1 { width: 100%; height: 100%; top: 0; left: 0; border: 2px solid var(--dex-blue); opacity: 0.55; }
+.split-visual .vc-2 { width: 70%; height: 70%; top: 15%; left: 15%; background: var(--dex-blue); opacity: 0.08; }
+.split-visual .vc-3 { width: 36%; height: 36%; top: 32%; left: 32%; background: var(--dex-navy); opacity: 0.92; display: flex; align-items: center; justify-content: center; color: var(--dex-white); font-family: var(--font-primary); font-size: 56px; }
+.slide-dark .split-visual .vc-3 { background: var(--dex-blue); color: var(--dex-white); opacity: 1; }
+
+/* Step list */
+.step-list { display: flex; flex-direction: column; gap: 22px; margin-top: 8px; }
+.step {
+    display: flex; gap: 22px; align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--dex-white);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--dex-blue);
+    box-shadow: 0 4px 24px rgba(5, 2, 78, 0.05);
+}
+.slide-dark .step {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    border-left-color: var(--dex-blue);
+}
+.step-num {
+    font-family: var(--font-primary);
+    font-size: 28px; font-weight: 400;
+    color: var(--dex-blue);
+    min-width: 38px;
+    line-height: 1;
+}
+.step-body h4 {
+    font-family: var(--font-secondary);
+    font-size: 17px; font-weight: 600;
+    margin-bottom: 6px;
+    color: inherit;
+}
+.step-body p {
+    font-family: var(--font-secondary);
+    font-size: 15px; font-weight: 300;
+    line-height: 1.55;
+    color: inherit;
+    opacity: 0.85;
+}
+
+/* Quote block */
+.quote-block {
+    margin-top: 44px;
+    padding: 32px 36px;
+    border-left: 4px solid var(--dex-blue);
+    background: rgba(0, 101, 247, 0.06);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-family: var(--font-secondary);
+    font-size: 18px; font-weight: 400;
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 920px;
+}
+.slide-dark .quote-block { background: rgba(0, 101, 247, 0.12); }
+.quote-attr {
+    margin-top: 14px;
+    font-style: normal;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0.7;
+    color: var(--dex-blue);
+}
+
+/* Variable fee model section */
+.model-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 32px;
+}
+.model-card {
+    padding: 36px 32px;
+    border-radius: var(--radius-lg);
+    position: relative;
+}
+.model-before {
+    background: rgba(5, 2, 78, 0.04);
+    border: 2px dashed rgba(5, 2, 78, 0.18);
+}
+.model-after {
+    background: var(--dex-navy);
+    color: var(--dex-white);
+    box-shadow: 0 12px 40px rgba(5, 2, 78, 0.18);
+}
+.model-card .model-tag {
+    font-family: var(--font-secondary);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--dex-blue);
+    margin-bottom: 14px;
+}
+.model-card h3 {
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 22px;
+    line-height: 1.15;
+}
+.model-card ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.model-card li {
+    font-family: var(--font-secondary);
+    font-size: 15px; font-weight: 300;
+    line-height: 1.5;
+    padding-left: 28px; position: relative;
+}
+.model-card li::before {
+    content: ""; position: absolute; left: 0; top: 9px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--dex-blue);
+}
+.model-before li::before { background: var(--dex-muted); opacity: 0.5; }
+
+/* Outcome panel */
+.outcome-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 12px;
+}
+.outcome {
+    padding: 32px 28px;
+    background: var(--dex-white);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 28px rgba(5, 2, 78, 0.06);
+    border-top: 4px solid var(--dex-blue);
+}
+.outcome h4 {
+    font-family: var(--font-primary);
+    font-size: 28px; font-weight: 400;
+    color: var(--dex-blue);
+    margin-bottom: 8px;
+}
+.outcome p {
+    font-family: var(--font-secondary);
+    font-size: 15px; font-weight: 400;
+    color: var(--dex-text);
+    line-height: 1.55;
+}
+
+/* Lessons grid */
+.lessons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+.lesson {
+    padding: 30px 32px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-lg);
+}
+.lesson h4 {
+    font-family: var(--font-primary);
+    font-size: 22px; font-weight: 400;
+    color: var(--dex-blue);
+    margin-bottom: 12px;
+}
+.lesson p {
+    font-family: var(--font-secondary);
+    font-size: 15px; font-weight: 300;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* Footer */
+footer {
+    background: var(--dex-navy);
+    color: var(--dex-white);
+    padding: 60px 80px 40px;
+    text-align: center;
+}
+footer img { height: 96px; margin-bottom: 28px; opacity: 0.95; }
+footer .tagline {
+    font-family: var(--font-secondary);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--dex-blue);
+    margin-bottom: 12px;
+}
+footer .meta {
+    font-family: var(--font-secondary);
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    nav .logo img { height: 56px; }
+    .slide { padding: 110px 24px 60px; }
+    .split { grid-template-columns: 1fr; gap: 40px; }
+    .split-visual { max-width: 320px; margin: 0 auto; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .model-grid { grid-template-columns: 1fr; }
+    .outcome-grid { grid-template-columns: 1fr; }
+    .lessons { grid-template-columns: 1fr; }
+    .hero-meta { gap: 18px; }
+    .hero-meta span { padding-right: 18px; }
+    footer { padding: 50px 24px 30px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+    <div class="logo">
+        <img src="https://www.dexfinity.com/wp-content/uploads/2021/03/Logo-Small-Dark-Landscape@2x.png" alt="Dexfinity">
+    </div>
+    <div class="case-tag">Case Study · Nebshop · 2026</div>
+</nav>
+
+<!-- SLIDE 1: HERO -->
+<section class="slide slide-dark" id="slide-1" data-mode="dark">
+    <div class="circle circle-outline" style="width:720px;height:720px;top:-260px;right:-260px"></div>
+    <div class="circle circle-gradient" style="width:520px;height:520px;bottom:-180px;left:-160px"></div>
+    <div class="circle circle-filled" style="width:140px;height:140px;top:30%;left:8%"></div>
+    <div class="slide-inner">
+        <div class="hero-eyebrow fade-up">Nebshop · Marec až Apríl 2026</div>
+        <h1 class="hero-title fade-up delay-1">Hrobár už čakal<br>pri lopate. <em>Klient zostal.</em></h1>
+        <p class="hero-subtitle fade-up delay-2">Ad hoc stretnutie na pumpe v piatok po ceste z konferencie v Jasnej. Mustra success fee napísaná v aute. Vlastné peniaze do rizika za výsledok klienta. Tri Go Beyond momenty v jednom týždni.</p>
+        <div class="hero-meta fade-up delay-3">
+            <span>Account in Charge: Ivan Lovás</span>
+            <span>Strategy &amp; AI: Pavol Adamčák</span>
+            <span>COO Review: Ondrej Lipták</span>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 2: BEFORE -->
+<section class="slide slide-dark" id="slide-2" data-mode="dark">
+    <div class="circle circle-outline" style="width:560px;height:560px;top:-200px;left:-200px"></div>
+    <div class="circle circle-gradient" style="width:420px;height:420px;bottom:-140px;right:-120px"></div>
+    <div class="slide-inner">
+        <div class="section-eyebrow fade-up">Východiskový stav</div>
+        <h2 class="section-title fade-up delay-1">Klient pod tlakom. Čísla pod cieľom.<br>Trpezlivosť na konci.</h2>
+        <p class="section-lead fade-up delay-2">Marec sa lámal a klient otvorene zvažoval, či vôbec ostane. Paušál bežal, výsledky nesedeli. Kampane fungovali, ale dopyt po brande Nebbia kolísal a celkový obrat zaostával.</p>
+        <div class="metrics-grid">
+            <div class="metric-card fade-up delay-1">
+                <div class="metric-label">Aktuálny obrat</div>
+                <div class="metric-value">~40k €</div>
+                <div class="metric-note">Polovica toho, čo si klient predstavoval</div>
+            </div>
+            <div class="metric-card fade-up delay-2">
+                <div class="metric-label">Cieľový obrat</div>
+                <div class="metric-value">80k €</div>
+                <div class="metric-note">Pri max. 25 % PNO vrátane všetkých nákladov</div>
+            </div>
+            <div class="metric-card fade-up delay-3">
+                <div class="metric-label">Reálne PNO</div>
+                <div class="metric-value">~27 %</div>
+                <div class="metric-note">Cieľ 25 %, GA4 ešte navrch dvojnásobil sessions</div>
+            </div>
+            <div class="metric-card fade-up delay-4">
+                <div class="metric-label">Brand riziko</div>
+                <div class="metric-value">80 %</div>
+                <div class="metric-note">Obratu závislých na kľúčovom slove „Nebbia"</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 3: REAL JOB -->
+<section class="slide slide-light" id="slide-3" data-mode="light">
+    <div class="circle circle-outline" style="width:480px;height:480px;top:-160px;right:-160px"></div>
+    <div class="circle circle-filled" style="width:280px;height:280px;bottom:-100px;left:-80px"></div>
+    <div class="slide-inner">
+        <div class="split">
+            <div class="split-visual fade-up">
+                <div class="circle vc-1"></div>
+                <div class="circle vc-2"></div>
+                <div class="circle vc-3">01</div>
+            </div>
+            <div>
+                <div class="section-eyebrow fade-up">Krok 1 · 27. marec 2026 · Go Beyond x3</div>
+                <h2 class="section-title fade-up delay-1">Ad hoc stretnutie<br>na pumpe.</h2>
+                <p class="section-lead fade-up delay-2">Piatok, po ceste z konferencie v Jasnej. Mimo kalendára, bez prezentácie, bez výhovoriek. Iba auto, káva na pumpe a celý záber od Google Ads cez UX webu až po proces vratiek. Toto je Go Beyond v praxi.</p>
+                <div class="step-list">
+                    <div class="step fade-up delay-1">
+                        <div class="step-num">A</div>
+                        <div class="step-body">
+                            <h4>Vysvetliť mechaniku Google algoritmov</h4>
+                            <p>Prečo PNO kolíše pri schodíkovitom uvoľňovaní rozpočtov a ako súvisí so závislosťou na brande Nebbia.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-up delay-2">
+                        <div class="step-num">B</div>
+                        <div class="step-body">
+                            <h4>Otvoriť tému dôvery v e-shop</h4>
+                            <p>Premium reseller status, sekcia O nás, reálne fotografie. Konkrétne odporúčania na webdevelopera v zdieľanom dokumente.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-up delay-3">
+                        <div class="step-num">C</div>
+                        <div class="step-body">
+                            <h4>Riešenie zákazníckeho servisu ako konkurenčná výhoda</h4>
+                            <p>Inteligentný formulár na vrátenie tovaru. Aktívny zber recenzií. Rýchla platba Apple Pay v košíku. Veci, ktoré zvyšujú konverziu mimo reklamy.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="quote-block fade-up delay-4">
+                    Flexibilita v komunikácii. Ubezpečenie, že to máme pod kontrolou. Prehĺbenie dôvery v našu odbornosť.
+                    <div class="quote-attr">Ivan Lovás · zápis po stretnutí</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 4: PROMPT IN THE CAR -->
+<section class="slide slide-dark" id="slide-4" data-mode="dark">
+    <div class="circle circle-outline" style="width:640px;height:640px;top:-220px;right:-220px"></div>
+    <div class="circle circle-gradient" style="width:480px;height:480px;bottom:-160px;left:-140px"></div>
+    <div class="circle circle-filled" style="width:120px;height:120px;top:18%;left:42%"></div>
+    <div class="slide-inner">
+        <div class="section-eyebrow fade-up">Krok 2 · Cestou späť, v aute</div>
+        <h2 class="section-title fade-up delay-1">Mustru za success fee napísal AI prompt.<br>Otočil pozornosť klienta od exitu naspäť k stolu.</h2>
+        <p class="section-lead fade-up delay-2">Pavol nahral celú situáciu klienta priamo z auta. Cez správne postavený prompt vznikla štruktúra, ktorú Ivan obratom adaptoval na reálny návrh.</p>
+        <div class="step-list">
+            <div class="step fade-up delay-1">
+                <div class="step-num">→</div>
+                <div class="step-body">
+                    <h4>Aktuálny stav otvorene</h4>
+                    <p>Obrat 40 000 €, PNO 27 %, brand závislosť na Nebbii, GA4 anomálie. Žiadne prikrášľovanie.</p>
+                </div>
+            </div>
+            <div class="step fade-up delay-2">
+                <div class="step-num">→</div>
+                <div class="step-body">
+                    <h4>Realita verzus cieľ</h4>
+                    <p>80 000 € v marci nie je reálne bez navýšenia investícií alebo zmeny vstupov. Ale výkon kampaní nie je v zlyhaní, problém je v objeme dopytu.</p>
+                </div>
+            </div>
+            <div class="step fade-up delay-3">
+                <div class="step-num">→</div>
+                <div class="step-body">
+                    <h4>Krátkodobá stabilizácia + strednodobý rast</h4>
+                    <p>Tvrdý performance režim. Kampane bez výkonu von. Paralelne zvyšovanie konverzného pomeru a príprava na sezónu apríl až máj.</p>
+                </div>
+            </div>
+            <div class="step fade-up delay-4">
+                <div class="step-num">→</div>
+                <div class="step-body">
+                    <h4>Prenesenie zodpovednosti za výkon</h4>
+                    <p>Variable fee model. Win-win konštrukcia. Klient je zrazu náš partner, nie obeť čísel.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 5: VARIABLE FEE MODEL -->
+<section class="slide slide-tinted" id="slide-5" data-mode="light">
+    <div class="circle circle-outline" style="width:520px;height:520px;top:-180px;left:-160px"></div>
+    <div class="circle circle-filled" style="width:360px;height:360px;bottom:-120px;right:-100px"></div>
+    <div class="slide-inner">
+        <div class="section-eyebrow fade-up">Krok 3 · 30. marec až 7. apríl</div>
+        <h2 class="section-title fade-up delay-1">Z paušálnej istoty na variable fee.<br>Existujúci paušál sa platí, až keď sa dosiahne cieľ.</h2>
+        <p class="section-lead fade-up delay-2">Ondrej Lipták okomentoval návrh priamo v dokumente. Ivan upravil. Klient cez víkend prečítal a v utorok 7. apríla podpísal.</p>
+        <div class="model-grid">
+            <div class="model-card model-before fade-up delay-1">
+                <div class="model-tag" style="color: var(--dex-muted);">Pôvodne</div>
+                <h3>Paušálna istota voči cieľu obratu</h3>
+                <ul>
+                    <li>Fixná mesačná fakturácia bez naviazania na výsledok</li>
+                    <li>Klient platí rovnako, či výsledky prídu alebo nie</li>
+                    <li>Frustrácia rastie s každou nesplnenou ambíciou</li>
+                    <li>Pri prvom slabšom mesiaci úvaha o exite</li>
+                </ul>
+            </div>
+            <div class="model-card model-after fade-up delay-2">
+                <div class="model-tag">Nový model</div>
+                <h3>Variable fee s ROAS 5 a stropom 25 % PNO</h3>
+                <ul>
+                    <li>Existujúci paušál sa dosiahne až pri splnení cieľa</li>
+                    <li>Pri prebití cieľa môžeme ísť aj nad paušál</li>
+                    <li>20 % kreditové PNO pre zisk, 5 % na rozvoj</li>
+                    <li>Cieľ obratu 80 000 €, mediálny budget do 18 000 €</li>
+                </ul>
+            </div>
+        </div>
+        <div class="quote-block fade-up delay-3">
+            Good job bude, keď klient zajtra podpíše a my vyrobíme minimálne 80 tisíc € s max. 25 % PNO. Ale základ je, že sme získali dôveru a čas.
+            <div class="quote-attr">Ivan Lovás · 6. apríl</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 6: TRUST -->
+<section class="slide slide-dark" id="slide-6" data-mode="dark">
+    <div class="circle circle-outline" style="width:580px;height:580px;top:-200px;right:-200px"></div>
+    <div class="circle circle-gradient" style="width:440px;height:440px;bottom:-160px;left:-120px"></div>
+    <div class="slide-inner">
+        <div class="section-eyebrow fade-up">Krok 4 · Po podpise</div>
+        <h2 class="section-title fade-up delay-1">Klient nedal len podpis.<br>Dal aj kľúče k tomu, čo doteraz nedal nikomu.</h2>
+        <p class="section-lead fade-up delay-2">Najsilnejším signálom nebolo to, že klient zostal. Bolo to, že nám otvoril prístupy, do ktorých sme predtým nevideli.</p>
+        <div class="outcome-grid">
+            <div class="outcome fade-up delay-1">
+                <h4>Citlivé dáta</h4>
+                <p>Prístup k interným číslam predaja a marží, ktoré boli predtým mimo náš dosah. Vieme tlačiť rozhodnutia tam, kde to dáva zmysel.</p>
+            </div>
+            <div class="outcome fade-up delay-2">
+                <h4>Trello na webdevelopera</h4>
+                <p>Priame zadávanie taskov vývojárovi klienta. UX a CRO odporúčania sa nevracajú v poštovom mailingu, idú rovno do realizácie.</p>
+            </div>
+            <div class="outcome fade-up delay-3">
+                <h4>Komunikačná kontinuita</h4>
+                <p>Jeden hlas voči klientovi (Ivan), jasná zodpovednosť. Tím sa môže sústrediť na delivery namiesto manažovania očakávaní.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 7: AI-FIRST DELIVERY -->
+<section class="slide slide-light" id="slide-7" data-mode="light">
+    <div class="circle circle-outline" style="width:460px;height:460px;top:-160px;left:-140px"></div>
+    <div class="circle circle-filled" style="width:300px;height:300px;bottom:-100px;right:-80px"></div>
+    <div class="slide-inner">
+        <div class="split">
+            <div>
+                <div class="section-eyebrow fade-up">Krok 5 · Delivery transformácia</div>
+                <h2 class="section-title fade-up delay-1">AI first. Ľudia neklikajú.<br>Ľudia rozhodujú.</h2>
+                <p class="section-lead fade-up delay-2">Variable fee modelu rozumie len delivery, ktorý je nákladovo zvládnuteľný. Prešli sme z manuálu na AI a templaty cez API.</p>
+                <div class="step-list">
+                    <div class="step fade-up delay-1">
+                        <div class="step-num">★</div>
+                        <div class="step-body">
+                            <h4>AI audit Google Ads (reálne dodané)</h4>
+                            <p>Kompletný audit účtu na <a href="https://dxfnt.github.io/nebshop-ads-audit/" style="color: var(--dex-blue); font-weight: 500;">dxfnt.github.io/nebshop-ads-audit</a>. Bez týždňov manuálnej práce. Po zapracovaní odporúčaní môže ísť na re-audit jediným promptom.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-up delay-2">
+                        <div class="step-num">★</div>
+                        <div class="step-body">
+                            <h4>Konkrétna príležitosť „športová podprsenka" (reálne dodané)</h4>
+                            <p>30+ variácií search termov bez dedikovanej kampane. Brand term „nebbia podprsenka" konvertuje, generic search chýba. Peter doplnil keywords do PMAX a Search Categories.</p>
+                        </div>
+                    </div>
+                    <div class="step fade-up delay-3">
+                        <div class="step-num">★</div>
+                        <div class="step-body">
+                            <h4>Ambícia „setup za nula" namiesto 2 000 €</h4>
+                            <p>Citácia z interného brief Jána Aštaryho: služba, čo bola historicky za 2 000 €, má ísť cez AI a templaty „za nula". Sklik, Bing, Heureka, feed automatizácie cez API. Plán, nie hotová vec. Matej odhadol prvý setup na 50 až 100 hodín.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="split-visual fade-up delay-2">
+                <div class="circle vc-1"></div>
+                <div class="circle vc-2"></div>
+                <div class="circle vc-3" style="font-size: 48px;">AI</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 8: LESSONS / GO BEYOND -->
+<section class="slide slide-dark" id="slide-8" data-mode="dark">
+    <div class="circle circle-outline" style="width:760px;height:760px;top:-280px;right:-280px"></div>
+    <div class="circle circle-gradient" style="width:560px;height:560px;bottom:-200px;left:-180px"></div>
+    <div class="circle circle-filled" style="width:160px;height:160px;top:30%;left:6%"></div>
+    <div class="slide-inner">
+        <div class="section-eyebrow fade-up">Čo si z toho zoberieme</div>
+        <h2 class="section-title fade-up delay-1">Reálny job a chytrý obchod.<br>Spolu, nie zvlášť.</h2>
+        <p class="section-lead fade-up delay-2">Samotné stretnutie by len zmieklo náladu. Samotný success fee by bol len číslo na papieri. Spolu vznikla praktická ukážka, že sa nebojíme dať svoje peniaze do rizika za výsledok klienta. Druhé líce, nie marketing.</p>
+        <div class="lessons">
+            <div class="lesson fade-up delay-1">
+                <h4>Hands on stretnutie nie je luxus</h4>
+                <p>Personal touch nestihneme nahradiť dashboardom. Klient potrebuje vidieť, že rozumieme jeho biznisu, nielen jeho účtu.</p>
+            </div>
+            <div class="lesson fade-up delay-2">
+                <h4>Variable model otvára reálnu konverzáciu</h4>
+                <p>Keď zdieľame riziko, klient zdieľa dáta. Trello, marže, interné čísla. Bez toho variable fee nemá ako fungovať.</p>
+            </div>
+            <div class="lesson fade-up delay-3">
+                <h4>AI je multiplikátor, nie skratka</h4>
+                <p>Bez AI by sa nový model ekonomicky nedal odrobiť. Bez ľudí by AI nemala čo prevodiť. Kombinácia robí rozdiel.</p>
+            </div>
+            <div class="lesson fade-up delay-4">
+                <h4>Account in Charge ako jedna ruka</h4>
+                <p>Pri kríze platí pravidlo jedného hlasu na klienta. Ivan získal mandát a zachoval kontinuitu. To rozhodlo rovnako ako čísla.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <img src="https://www.dexfinity.com/wp-content/uploads/2021/03/Logo-Small-Dark-Landscape@2x.png" alt="Dexfinity">
+    <div class="tagline">Go Beyond</div>
+    <div class="meta">Nebshop Case Study · Interný materiál · Apríl 2026</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+const nav = document.getElementById('topnav');
+const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const mode = entry.target.dataset.mode;
+            if (mode === 'light') nav.classList.add('light-mode');
+            else nav.classList.remove('light-mode');
+        }
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.slide').forEach(el => navObserver.observe(el));
+</script>
+
+</body>
+</html>
